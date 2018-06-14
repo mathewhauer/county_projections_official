@@ -7,8 +7,8 @@ output:
     fig_caption: true
     latex_engine: pdflatex
     template: LATEX/svm-latex-ms.tex
-title: "Population projections for all U.S. counties by age, sex, and race consisent with the Shared Socioeconomic Pathways"
-thanks: "The data and code that supports this analysis are available in the supplementary materials."
+title: "Population projections for all U.S. counties by age, sex, and race controlled to the Shared Socioeconomic Pathways"
+thanks: "The data and code that supports this analysis are available at https://github.com/mathewhauer/county_projections_official."
 author:
 - name: Mathew E. Hauer ^1^*
   affiliation: Florida State University
@@ -48,19 +48,10 @@ library(knitr)
 read_chunk('SCRIPTS/000-Libraries.R')
 read_chunk('SCRIPTS/001-fipscodes.R')
 read_chunk('SCRIPTS/002-basedataload.R')
-
 read_chunk('SCRIPTS/091-readevalproj.R')
 read_chunk('SCRIPTS/092-readevalproj_fitted.R')
 read_chunk('SCRIPTS/093-lexisplotexample.R')
 read_chunk('SCRIPTS/094-PROJECTIONS_import.R')
-# read_chunk('SCRIPTS/006-Figure2.R')
-# read_chunk('SCRIPTS/007-figure3a_xTFRAfrica.R')
-# read_chunk('SCRIPTS/007-figure3b_historicbTFR.R')
-# read_chunk('SCRIPTS/007-figure3c_incomexTFR.R')
-# read_chunk('SCRIPTS/007-figure3_combined.R')
-# read_chunk('SCRIPTS/008-suppfig1_uscountyxTFR.R')
-# read_chunk('SCRIPTS/009-suppfig2.R')
-# read_chunk('SCRIPTS/010-suppfig3.R')
 ```
 
 ```{r libraries, include=FALSE}
@@ -79,9 +70,9 @@ read_chunk('SCRIPTS/094-PROJECTIONS_import.R')
 ```{r readevalproj_fitted, include=FALSE, cache=TRUE}
 ```
 
-<!-- ```{r projections, include=FALSE, cache=TRUE} -->
+```{r projections, include=FALSE, cache=TRUE}
 
-<!-- ``` -->
+```
 
 # BACKGROUND & SUMMARY
 

@@ -1,5 +1,5 @@
 # Introduction
-Here I provide the code for:  [**Population projections for all U.S. counties by age, sex, and race controlled to the Shared Socioeconomic Pathways**](link will go here)
+Here I provide the code for:  [**Population projections for all U.S. counties by age, sex, and race controlled to the Shared Socioeconomic Pathways**](https://github.com/mathewhauer/county_projections_official/blob/master/maintext.pdf)
 
 ### Citation
 
