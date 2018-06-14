@@ -28,7 +28,7 @@ Small area and subnational population projections are important for understandin
 `AGE`
 - 0-4 = 1
 - 5-9 = 2
-...
+- ...
 - 80-84 = 17
 - 85+ = 18
 
