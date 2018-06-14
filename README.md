@@ -24,6 +24,24 @@ Small area and subnational population projections are important for understandin
 - Feel free to create a new branch for further incorporation and analysis . 
 - More information in is located in each folder `DATA`.
 
+# Codebook
+`AGE`
+- 0-4 = 1
+- 5-9 = 2
+...
+- 80-84 = 17
+- 85+ = 18
+
+`SEX`
+- Male = 1
+- Female = 2
+
+`RACE`
+- White NH = 1
+- Black, NH = 2
+- Hispanic = 3
+- Other, NH =4
+
 # Correspondence
 For any issues with the functionality of these scripts please [create an issue](https://github.com/mathewhauer/county_projections_official/issues).
 
