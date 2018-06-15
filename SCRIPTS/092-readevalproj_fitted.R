@@ -68,4 +68,8 @@ z2 <- z %>%
                    Ptot = sum(POPULATION))
 
 z<- left_join(z, z2) %>%
-  mutate(A = (A/Atot)*Ptot)
+  mutate(A = (A/Atot)*Ptot,
+         GEOID = case_when(
+           GEOID=="46113"~ "46102",
+           GEOID== "51917" ~ "51019",
+           TRUE ~ as.character(GEOID)))

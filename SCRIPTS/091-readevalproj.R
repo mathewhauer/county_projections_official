@@ -60,4 +60,8 @@ z<- left_join(z, countynames)
 z[is.na(z)] <-0
 base_projunfitted<- filter(z,
            !GEOID %in% c("02900", "04910", "15900", "35910", "36910", "51910", "51911","51911", "51913", "51914", "51915", "51916", "51918"),
-           !YEAR == 2020)
+           !YEAR == 2020) %>%
+  mutate(GEOID = case_when(
+    GEOID=="46113"~ "46102",
+    GEOID== "51917" ~ "51019",
+    TRUE ~ as.character(GEOID)))

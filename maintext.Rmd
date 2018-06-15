@@ -7,7 +7,7 @@ output:
     fig_caption: true
     latex_engine: pdflatex
     template: LATEX/svm-latex-ms.tex
-title: "Population projections for all U.S. counties by age, sex, and race controlled to the Shared Socioeconomic Pathways"
+title: "Population projections for U.S. counties by age, sex, and race controlled to the Shared Socioeconomic Pathways"
 thanks: "The data and code that supports this analysis are available at https://github.com/mathewhauer/county_projections_official."
 author:
 - name: Mathew E. Hauer ^1^*
@@ -25,7 +25,7 @@ geometry: margin=1in
 fontsize: 11pt
 spacing: double
 bibliography: LATEX/mybibfile.bib
-biblio-style: apsr
+biblio-style: nature
 # use apsr or nature
 header-includes:
 - \usepackage[all]{nowidow}
@@ -80,9 +80,9 @@ read_chunk('SCRIPTS/094-PROJECTIONS_import.R')
 
 Population projections have a long history in the social and physical sciences as a means of examining demographic change, planning for the future, and to inform decision making in a variety of applications [@smith2006state; @passel2008us; @hebert2003alzheimer; @hales2002potential; @hauer2016millions; @gerland2014; @colby2017projections]. Scholars typically produce detailed population projections for countries [@gerland2014; @o2014new], but growing demand for small-area demographic analysis, especially as it relates to climate change, highlights the importance of subnational projections [@alexander2017flexible; @chi2009can; @smith2013practitioner; @raymer2012does; @tatem2012mapping; @jones2016spatially]. 
 
-Despite the growing demand for subnational population projections, relatively few subnational population projections in the United States exist. County-level population projections are typically only available through the gray-literature (such as through the Federal and State Cooperative for Population Projections) or through for-profit companies and oftentimes only comprise several states rather than the whole United States. These projections, while incredibly useful, tend to employ a variety of methods, input data, time horizons, and demographic groupings making a inter-state and inter-projection comparisons difficult. Other research has turned to gridded-population projections for subnational analysis [@jones2016spatially]. Such data are useful, but lack demographic deatils by age, sex, or race and utilize geographies uncommon to other United States statistical reporting. The lack of rigorous small-area population projections by detailed demographic subgroups has hampered our understanding of subnational demographic change in the United States.
+Despite the growing demand for subnational population projections, relatively few subnational population projections in the United States exist. County-level population projections are typically only available through the gray-literature (such as through the Federal and State Cooperative for Population Projections) or through for-profit companies and oftentimes only comprise several states rather than the whole United States. These projections, while incredibly useful, tend to employ a variety of methods, input data, time horizons, and demographic groupings making a inter-state and inter-projection comparisons difficult. Other research has turned to gridded-population projections for subnational analysis [@jones2016spatially]. Such data are useful, but lack demographic details by age, sex, or race and utilize geographies uncommon to other United States statistical reporting. The lack of rigorous small-area population projections by detailed demographic subgroups has hampered our understanding of subnational demographic change in the United States.
 
-The Cohort-component method for population projection, the typical demographic projection methodology, requires oftentimes difficult, if not impossible, to obtain data on each population component process (fertility, mortality, and migration), and this data limitation generally limits population projections to the nation scale [@gerland2014; @o2014new]. Using a parismonious cohort-component alternative [@baker2017cohort], I overcome the data issues associated with a typical cohort-component projection to produce a set of U.S. county-level population projections by detailed demographic characteristics (18 age groups, 2 sex groups, and 4 race groups) controlled to the five Shared Socioeconoimc Pathways (SSPs) [@o2014new] and make both the *R* code and subsequent population projections available for dissemination to a wide audience. These projections can be used to understand small-area demographic change in the United States.
+The Cohort-component method for population projection, the typical demographic projection methodology, requires oftentimes difficult, if not impossible, to obtain data on each population component process (fertility, mortality, and migration), and this data limitation generally limits population projections to the nation scale [@gerland2014; @o2014new]. Using a parsimonious cohort-component alternative [@baker2017cohort], I overcome the data issues associated with a typical cohort-component projection to produce a set of U.S. county-level population projections by detailed demographic characteristics (18 age groups, 2 sex groups, and 4 race groups) controlled to the five Shared Socioeconomic Pathways (SSPs) [@o2014new] and make both the *R* code and subsequent population projections available for dissemination to a wide audience. These projections can be used to understand small-area demographic change in the United States.
 
 The Hamilton-Perry method [@hamilton1962short; @swanson2010forecasting] is a simple, parsimonious technique for producing population projections directly from multiple age-sex distributions through the use of cohort-change ratios (CCRs) [@baker2017cohort] and is a common alternative to cohort-component. The minimal data requirements to produce CCRs and the ability to implement CCRs in Leslie matrix projection methods [@sprague2012automatic] make CCRs attractive in the production of small-area demographic projections. However, CCRs suffer from two major disadvantages over the use of cohort-component: 1) short-term rapid population growth can create impossibly explosive growth in long-range projections due to the nature of compound growth and 2) small cell sizes can create impossibly large CCRs with very small numeric change (ie 2 persons -> 4 persons yield a doubling each period).
 
@@ -251,7 +251,7 @@ Extra consideration must be paid to the Group quarters (GQ) population in each c
 
 I calculate GQ as the difference between the occupied household population and the total population in each age/sex/race/county group from Summary File 1 of the 2000 Decennial Census for the out-of-sample validation and from Summary File 1 of the 2010 Decennial Census for the population projections. This difference is the Group quarters population.
 
-All *resident* populations are projected in this modelling scheme such that the populations at launch year are equal to the total population minus the group quarters population. Group quarters populations at time $t$ are then added back into the projected resident population at time $t+1$. 
+All *resident* populations are projected in this modeling scheme such that the populations at launch year are equal to the total population minus the group quarters population. Group quarters populations at time $t$ are then added back into the projected resident population at time $t+1$. 
   
 ## Miscellaneous
 In the event a UCM contained NA or infinite values or produced covariance matrices with values larger than 10,000,000, the projections were set to 0. Upper and Lower bounds of failed UCMs were set to 0. Any infinite, NA, or NAN CCR, CCD, or CWR was set to 0. In the event the projections still produced negative populations, they were also set to 0.
@@ -382,7 +382,7 @@ kable(table, caption="\\label{tab:COUNTYeval}**Evaluation of overall errors for 
 
 \autoref{countymap} shows the absolute percent errors associated with the total population for the CCR/CCD model in U.S. counties in 2015. Most states and counties see relatively low errors with the median APE of just 8.2% by 2015, however some isolated pockets of high errors do exist randomly distributed throughout the United States, specifically in the Western half ot eh United States in states such as Colorado and New Mexico.
 
-```{r, echo=FALSE, , message=FALSE, warning=FALSE, cache=TRUE, paged.print=FALSE, fig.cap=paste("**Map of county errors of the total population in 2015 using the CCR/CCD model.** Here I show the geographic distribution of absolute percent errors. Most states and counties have low error rates of the total population with isolated pockets of large errors. \\label{countymap}"), results='asis'}
+```{r, echo=FALSE, , message=FALSE, warning=FALSE, cache=TRUE, paged.print=FALSE, fig.cap=paste("**Map of county errors of the total population in 2015 using the CCR/CCD model.** Here I show the geographic distribution of absolute percent errors. Most states and counties have low error rates of the total population with isolated pockets of large errors. The missing counties in Colorado are due to geographic boundary changes associated with the creation of Broomfield County in 2001. \\label{countymap}"), results='asis'}
 eval_ucm_cntytotal <- base_projunfitted %>%
   filter(!TYPE == "BASE") %>%
   group_by(STATE, COUNTY, GEOID, YEAR, TYPE) %>%
@@ -543,7 +543,7 @@ plot_grid(prow, legend, rel_widths = c(2.5, 0.5))
 ```
 
 
-\autoref{agestructures} shows the Algebraic Percent Errors by age group averaged for all three evaluation periods. For every age below 85+, the CCD and CCR/CCD models produce ALPEs closer to zero, but for the 85+ age group, the CCR model produces ALPEs much closer to zero. This could be reflective of mortality being the dominant population process for older age populations. Here, the 50th percentile ALPE for CCD and CCR/CCD is approximately 25% while the CCR model is just under 1%. This bias is virtually eliminated when controlling the populations to the Age/Sex total of the United States ("RAKED CCD/CCR"). The elimination of this bias is important because the actual projections are controlled to the SSPs, meaning the projected age distributions are presevered even if magnitudes differ lending credibility to the actual projections.
+\autoref{agestructures} shows the Algebraic Percent Errors by age group averaged for all three evaluation periods. For every age below 85+, the CCD and CCR/CCD models produce ALPEs closer to zero, but for the 85+ age group, the CCR model produces ALPEs much closer to zero. This could be reflective of mortality being the dominant population process for older age populations. Here, the 50th percentile ALPE for CCD and CCR/CCD is approximately 25% while the CCR model is just under 1%. This bias is virtually eliminated when controlling the populations to the Age/Sex total of the United States ("RAKED CCD/CCR"). The elimination of this bias is important because the actual projections are controlled to the SSPs, meaning the projected age distributions are persevered even if magnitudes differ lending credibility to the actual projections.
 
 ```{r,echo=FALSE, results='asis', cache=TRUE, message=FALSE, warning=FALSE,  fig.cap=paste("**Algebraic Percent Errors by age group.** I plot the 50th percentile Algebraic Percent Error (ALPE) by age group.\\label{agestructures}")}
 eval_ucm_agetotal <- base_projunfitted %>%
@@ -744,15 +744,15 @@ kable(table, caption="**Evaluation of Age/Sex/Race/County joint Errors.**", digi
 \autoref{countymapssps} shows county-level numeric population change for the period 2020-2100 under all five SSPs. The five SSPs lead to substantial differences in geographic growth patterns. For instance, most of California is projected to see increases in population in four of the five SSPs; only SSP3: Regional Rivalry shows projected population declines in southern California. Conversely, the heavily-populated North East is projected to see significant population declines in all SSPs except SSP5: Fossil-fueled development. The five SSPs represent different pathways by which the United States could be expected to grow this century.
 
 ```{r countymap, echo=FALSE, results='asis', message=FALSE, warning=FALSE, fig.heigh=6.5, fig.cap=paste("**Projected numeric population changes for the five SSPs between 2020 and 2100 for counties in the continental United States.**   \\label{countymapssps}")}
-
-# states <- spTransform(states, CRS("+init=epsg:2163"))
-# counties <- counties(cb = TRUE)
-# counties <- spTransform(counties, CRS("+init=epsg:2163")) %>%
+# 
+# states <- spTransform(states(cb=TRUE), CRS("+init=epsg:2163"))
+# counties2 <- counties(cb = TRUE)
+# counties <- spTransform(counties2, CRS("+init=epsg:2163")) %>%
 #   subset(!(STATEFP %in% c("60", "64","66", "68", "69", "70", "74","72", "78")))
-#
+# 
 # countyproj <- SSPs %>%
 #   # left_join(., statenames) %>%
-#   dplyr::group_by(YEAR, GEOID) %>%
+#   dplyr::group_by(YEAR, STATE,GEOID) %>%
 #   dplyr::summarise(SSP1 = sum(SSP1),
 #                    SSP2 = sum(SSP2),
 #                    SSP3 = sum(SSP3),
@@ -772,19 +772,25 @@ kable(table, caption="**Evaluation of Age/Sex/Race/County joint Errors.**", digi
 #            Scenario == "SSP2" ~ "SSP2: Middle",
 #            Scenario == "SSP3" ~ "SSP3: Regional rivalry",
 #            Scenario == "SSP4" ~ "SSP4: Inequality",
-#            Scenario == "SSP5" ~ "SSP5: Fossil-fueled development")) %>%
+#            Scenario == "SSP5" ~ "SSP5: Fossil-fueled development"),
+#          GEOID = case_when(
+#     GEOID=="46113"~ "46102", # Shannon County (46113)'s name changed to Oglala Lakota (46102)
+#     GEOID== "51917" ~ "51019", # Bedford City (51917) is merged into Bedford County (51019)
+#     GEOID == "02270" ~ "02158", # Wade Hampton (02270) is actually (02158)
+#     TRUE ~ as.character(GEOID)
+#   )) %>%
 #   na.omit
-#
-#
-#
-#
+# 
+# 
+# 
+# 
 # countiesssp1 <- append_data(counties, countyproj[which(countyproj$Scenario == "SSP1"),], key.shp = "GEOID", key.data = "GEOID", ignore.duplicates = TRUE)
 # countiesssp2 <- append_data(counties, countyproj[which(countyproj$Scenario == "SSP2"),], key.shp = "GEOID", key.data = "GEOID", ignore.duplicates = TRUE)
 # countiesssp3 <- append_data(counties, countyproj[which(countyproj$Scenario == "SSP3"),], key.shp = "GEOID", key.data = "GEOID", ignore.duplicates = TRUE)
 # countiesssp4 <- append_data(counties, countyproj[which(countyproj$Scenario == "SSP4"),], key.shp = "GEOID", key.data = "GEOID", ignore.duplicates = TRUE)
 # countiesssp5 <- append_data(counties, countyproj[which(countyproj$Scenario == "SSP5"),], key.shp = "GEOID", key.data = "GEOID", ignore.duplicates = TRUE)
-#
-#
+# 
+# 
 # countynummaps <- function(df, scen){
 #   US_cont <- df %>%
 #   subset(!STATEFP %in% c("02","15"))
@@ -844,7 +850,9 @@ plot_grid(top,
 
 # DATA RECORDS
 
-The projected populations by age/sex/race/county/year/SSP for all US counties for the period 2020-2100 are available at the Socioeconomic Data and Applications Center (SEDAC) housed within the Center for International Earth Science Information Network (CIESIN) at Columbia University. The data can be downloaded in a single zipped CSV file format.
+The projected populations by age/sex/race/county/year/SSP for all US counties for the period 2020-2100 are available at the Open Science Foundation. The data can be downloaded in a single zipped .CSV file format.
+
+Data resulting from these projections can be found in SSP\_asrc.csv.zip (Data Citation 1).
 
 Projected populations include each US county, 18 age groups (1=0-4, 2=5-9, ..., 18=85+), two sex groups (1=Male and 2=Female), and four race groups (1=White NH, 2=Black NH, 3=Hispanic, and 4=Other NH).
 

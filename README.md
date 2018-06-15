@@ -24,7 +24,27 @@ Small area and subnational population projections are important for understandin
 - Feel free to create a new branch for further incorporation and analysis . 
 - More information in is located in each folder `DATA`.
 
+# Data
+
+The projected populations by age/sex/race/county/year/SSP for all US
+counties for the period 2020-2100 are available at the Open Science Foundation [https://dx.doi.org/10.17605/OSF.IO/9YNFC](https://dx.doi.org/10.17605/OSF.IO/9YNFC).
+
+Data resulting from these projections can be found in the file `SSP_asrc.csv.zip`.
+
 # Codebook
+
+`YEAR`
+- Refers to the year of each projection. 2020 -- 2100 in five-year increments.
+
+`STATE`
+- Refers to the two-digit FIPS code associated with each state.
+
+`COUNTY`
+- Refers to the three-digit FIPS code associated with each county in each state.
+
+`GEOID`
+- Refers to the five-digit FIPS code associated with each individual county and is the product of the STATE two-digit code and the COUNTY three-digit code.
+
 `AGE`
 - 0-4 = 1
 - 5-9 = 2

@@ -127,7 +127,13 @@ test <- left_join(totals2, SSPs2) %>%
          SSP2 = SSP2*percentage*1000000,
          SSP3 = SSP3*percentage*1000000,
          SSP4 = SSP4*percentage*1000000,
-         SSP5 = SSP5*percentage*1000000) %>%
+         SSP5 = SSP5*percentage*1000000,
+         GEOID = case_when(
+           GEOID=="46113"~ "46102", # Shannon County (46113)'s name changed to Oglala Lakota (46102)
+           GEOID== "51917" ~ "51019", # Bedford City (51917) is merged into Bedford County (51019)
+           GEOID == "02270" ~ "02158", # Wade Hampton (02270) is actually (02158)
+           TRUE ~ as.character(GEOID))
+         ) %>%
   select(YEAR, SEX, STATE, COUNTY, GEOID, RACE, AGE, SSP1:SSP5)
 
 test2 <- test %>%
