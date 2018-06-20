@@ -3,7 +3,8 @@ Here I provide the code for:  [**Population projections for all U.S. counties by
 
 ### Citation
 
-> Citation will go here.
+> Hauer, M.E. **Open Science Framework.** [DOI 10.17605/OSF.IO/9YNFC](DOI 10.17605/OSF.IO/9YNFC) (YEAR ACCESSED).
+
 
 
 # Abstract
@@ -12,6 +13,8 @@ Small area and subnational population projections are important for understandin
 
 ![Main Figure](FIGURES/countymap.png "Main Figure")
 *Projected numeric population changes for the five SSPs between 2020 and 2100 for counties in the continental United States.*
+
+
 
 # Organization
 - `SCRIPTS`  — Scripts and output for figures included in the documentation.
@@ -29,7 +32,7 @@ Small area and subnational population projections are important for understandin
 The projected populations by age/sex/race/county/year/SSP for all US
 counties for the period 2020-2100 are available at the Open Science Foundation [https://dx.doi.org/10.17605/OSF.IO/9YNFC](https://dx.doi.org/10.17605/OSF.IO/9YNFC).
 
-Data resulting from these projections can be found in the file `SSP_asrc.csv.zip`.
+*Data resulting from these projections can be found in the file `SSP_asrc.csv.zip`.*
 
 # Codebook
 
