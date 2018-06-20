@@ -3,7 +3,7 @@ Here I provide the code for:  [**Population projections for all U.S. counties by
 
 ### Citation
 
-> Hauer, M.E. **Open Science Framework.** [DOI 10.17605/OSF.IO/9YNFC](DOI 10.17605/OSF.IO/9YNFC) (YEAR ACCESSED).
+> Hauer, M.E. *Open Science Framework.* (DOI 10.17605/OSF.IO/9YNFC) (YEAR ACCESSED).
 
 
 
