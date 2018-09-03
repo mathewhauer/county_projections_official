@@ -5,7 +5,7 @@ library(censusapi)
 library(tidycensus)
 
 # ENTER YOUR CENSUS API KEY HERE
-key <- ""
+ key <- "0206e3f2924a424be8722887fd0a49cea6308a7e"
 
 
 fipslist <- read_csv(file="https://www2.census.gov/geo/docs/reference/codes/files/national_county.txt", col_names = FALSE) %>%
@@ -473,8 +473,9 @@ list <- listCensusMetadata(name = "sf1", vintage = "2010", type ="variables")
 dat <- pbmclapply(stateid, getgq_2010)
 GQ2010 <- rbindlist(dat)
 
+baseyear <- "2000"
 list <- listCensusMetadata(name = "sf1", vintage = baseyear, type ="variables")
-dat <- pblapply(stateid, getgq_2000)
+dat <- pbmclapply(stateid, getgq_2000)
 GQ2000 <- rbindlist(dat)
 
 write_csv(GQ2010, "DATA-PROCESSED/gq_2010.csv")
