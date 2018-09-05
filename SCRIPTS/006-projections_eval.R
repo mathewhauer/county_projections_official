@@ -71,7 +71,7 @@ packages(pbmcapply)
 rm(packages)
 set.seed(100)
 
-
+source('./SCRIPTS/000-Libraries.R')      # loading in the libraries
 source('./SCRIPTS/001-fipscodes.R')
 source('./SCRIPTS/002-basedataload.R')
 Klaunch <- K05_pop[which(K05_pop$YEAR==launch_year),]
@@ -109,11 +109,14 @@ project = function(x){
   tryCatch({#print(x)
     ###   Prediction of the CCR function
     predccr = function(ccr, sex, x, DF){
-      y <- as_data_frame(DF[[as.character(ccr)]][which(DF$COUNTYRACE== x & DF$SEX == sex )])/10
-      num<- seq(1,FORLEN,5)
-      pred<- tryCatch(predict(ucm(value~0, data = y, level = TRUE, slope = FALSE)$model, n.ahead = FORLEN)[c(num),]*10
-                      , error=function(e) array(0, c(STEPS)))
+       y <- as_data_frame(DF[[as.character(ccr)]][which(DF$COUNTYRACE== x & DF$SEX == sex )])
+       num<- seq(1,FORLEN,5)
+      # pred<- tryCatch(predict(ucm(value~0, data = y, level = TRUE, slope = FALSE)$model, n.ahead = FORLEN)[c(num),]*10
+      #                 , error=function(e) array(0, c(STEPS)))
+              pred<- tryCatch(forecast(arima(y$value, order = c(1,1,0)), h= FORLEN)$mean[c(num)]
+                              , error=function(e) array(0, c(STEPS)))
       return(pred)
+
     }
 
     ###################
@@ -450,3 +453,4 @@ for(this.state in stateid){
     spread(Scenario, Freq)
   write.table(KT2, paste0("PROJECTIONS/EVAL/COUNTY_20002015_",this.state,".csv"))
 }
+
