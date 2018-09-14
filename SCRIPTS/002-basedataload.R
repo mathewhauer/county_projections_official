@@ -21,15 +21,15 @@ years$YEAR <- seq(launch_year+5,launch_year+(STEPS*5), 5)
 years$YEAR <- seq(launch_year+1,launch_year+STEPS,1)
 
 ##############################################################
-# #
-# # DOWNLOADING THE CDC POPULATION ESTIMATES FOR 1969-2016.
-# #
-# # IF RUNNING THIS SCRIPT FOR THE FIRST LINE, Run the download.file line and the gunzip line.
-# #
+#
+# DOWNLOADING THE CDC POPULATION ESTIMATES FOR 1969-2016.
+#
+# IF RUNNING THIS SCRIPT FOR THE FIRST LINE, Run the download.file line and the gunzip line.
+#
 # download.file("https://seer.cancer.gov/popdata/yr1969_2016.19ages/us.1969_2016.19ages.adjusted.txt.gz", "DATA/us.1969_2016.19ages.adjusted.txt.gz")
-# # UNZIPPING THE DATA FILE
+# UNZIPPING THE DATA FILE
 # gunzip("DATA/us.1969_2016.19ages.adjusted.txt.gz", overwrite = TRUE, remove = TRUE)
-# #
+#
 ###################################################################
 
 # READING THE cdc DATA INTO R. THE DATA ARE IN A SINGLE COLUMN FORMAT AND SO THEY MUST BE BROKEN APART.
