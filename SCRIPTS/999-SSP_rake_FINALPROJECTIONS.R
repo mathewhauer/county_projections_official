@@ -1,5 +1,5 @@
 
-
+source('./SCRIPTS/000-Libraries.R')      # loading in the libraries
 source('./SCRIPTS/001-fipscodes.R')
 source('./SCRIPTS/003-proj_basedataload.R')
 
@@ -13,18 +13,21 @@ K05_launch <- K05_pop[which(K05_pop$YEAR == launch_year),] %>%
 files <- paste0("PROJECTIONS/PROJ//", list.files(path = "./PROJECTIONS/PROJ/",pattern = ".csv"))
 temp <- lapply(files, fread, sep=" ")
 z <- rbindlist( temp ) %>%
-  dplyr::rename(YEAR = V3,
-                SEX = V4,
-                COUNTYRACE = V5,
-                TYPE = V6,
-                AGE = V7,
-                A = V8,
-                B = V9,
-                C = V10,
-                Var1 = V2) %>%
+  # dplyr::rename(YEAR = V3,
+  #               SEX = V4,
+  #               COUNTYRACE = V5,
+  #               TYPE = V6,
+  #               AGE = V7,
+  #               A = V8,
+  #               B = V9,
+  #               C = V10,
+  #               Var1 = V2) %>%
   mutate(STATE= substr(COUNTYRACE, 1,2),
          COUNTY = substr(COUNTYRACE, 3,5),
          GEOID = paste0(STATE, COUNTY),
+         A = as.numeric(A),
+         B = as.numeric(B),
+         C = as.numeric(C),
          A = if_else(A<0, 0, A),
          B = if_else(B<0, 0, B),
          C = if_else(C<0,0, C),
@@ -119,9 +122,9 @@ SSPs2 <- SSPs %>%
   dplyr::summarise(Population = sum(Population)) %>%
   ungroup() %>%
   spread(SSP, Population) %>%
-  mutate(YEAR = as.integer(YEAR),
-         SEX = as.character(SEX))
-
+  mutate(YEAR = as.integer(YEAR)
+         # SEX = as.character(SEX))
+)
 test <- left_join(totals2, SSPs2) %>%
   mutate(SSP1 = SSP1*percentage*1000000,
          SSP2 = SSP2*percentage*1000000,
@@ -137,13 +140,22 @@ test <- left_join(totals2, SSPs2) %>%
   select(YEAR, SEX, STATE, COUNTY, GEOID, RACE, AGE, SSP1:SSP5)
 
 test2 <- test %>%
-  group_by(YEAR, SEX, STATE, RACE, AGE) %>%
+  group_by(YEAR, STATE) %>%
   dplyr::summarise(SSP1 = sum(SSP1),
                    SSP2 = sum(SSP2),
                    SSP3 = sum(SSP3),
                    SSP4 = sum(SSP4),
-                   SSP5 = sum(SSP5),
-                   n = length(unique(GEOID)))
+                   SSP5 = sum(SSP5)) %>%
+  gather(Scenario, Population, SSP1:SSP5)
+
+test3 <- test %>%
+  group_by(YEAR, SEX, STATE, COUNTY, GEOID, RACE, AGE) %>%
+  dplyr::summarise(SSP1 = sum(SSP1),
+                   SSP2 = sum(SSP2),
+                   SSP3 = sum(SSP3),
+                   SSP4 = sum(SSP4),
+                   SSP5 = sum(SSP5))
 
 
-# write_csv(test, "DATA-PROCESSED/SSP_asrc.csv")
+write_csv(test3, "DATA-PROCESSED/SSP_asrc.csv")
+write_csv(test2, "DATA-PROCESSED/ssp_sums.csv")

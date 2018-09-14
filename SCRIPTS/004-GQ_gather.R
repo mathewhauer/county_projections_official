@@ -5,7 +5,7 @@ library(censusapi)
 library(tidycensus)
 
 # ENTER YOUR CENSUS API KEY HERE
-key <- ""
+ key <- "0206e3f2924a424be8722887fd0a49cea6308a7e"
 
 
 fipslist <- read_csv(file="https://www2.census.gov/geo/docs/reference/codes/files/national_county.txt", col_names = FALSE) %>%
@@ -353,15 +353,15 @@ getgq_2000 = function(x){
       left_join(., list) %>%
       mutate(Racecode = substr(name, 5, 5),
              label= as.character(label)) %>%
-      separate(label, c("Sex", "Other", "Age"), sep = ":") %>%
-      separate(Other, c("drop", "pAge"), sep = "! ") %>%
-      separate(pAge, c("Age", "Drop"), sep = " years") %>%
+      separate(label, c("Drop", "Sex", "Age"), sep = ":") %>%
+      # separate(Other, c("drop", "pAge"), sep = "! ") %>%
+      # separate(pAge, c("Age", "Drop"), sep = " years") %>%
       mutate(Age = case_when(
-        Age == "Under 5" ~ 1,
+        Age == "'<'5" ~ 1,
         Age == "5 to 9" ~ 2,
         Age == "10 to 14" ~ 3,
         Age == "15 to 17" ~ 4,
-        Age == "18 and 19" ~ 4,
+        Age == "18'&'19" ~ 4,
         Age == "20" ~ 5,
         Age == "21" ~ 5,
         Age == "22 to 24" ~ 5,
@@ -372,15 +372,16 @@ getgq_2000 = function(x){
         Age == "45 to 49" ~ 10,
         Age == "50 to 54" ~ 11,
         Age == "55 to 59" ~ 12,
-        Age == "60 and 61" ~ 13,
+        Age == "60'&'61" ~ 13,
         Age == "62 to 64" ~ 13,
-        Age == "65 and 66" ~ 14,
+        Age == "65'&'66" ~ 14,
         Age == "67 to 69" ~ 14,
         Age == "70 to 74" ~ 15,
         Age == "" ~ 15,
         Age == "75 to 79" ~ 16,
         Age == "80 to 84" ~ 17,
-        Age == "85" ~ 18),
+        Age == "85 yrs'&'over" ~ 18,
+        Age == " 85 yrs'&'over" ~ 18),
         Race = case_when(
           Racecode == "B" ~ "BLACK, NH",
           Racecode %in% c("C", "D", "E", "F", "G") ~ "OTHER, NH",
@@ -407,34 +408,34 @@ getgq_2000 = function(x){
       gather(name, HHPOP, PCT013B006:PCT013B049) %>%
       left_join(., list) %>%
       mutate(Racecode = substr(name, 7, 7)) %>%
-      separate(label, c("Sex", "Other", "Age"), sep = ":") %>%
-      separate(Other, c("drop", "pAge"), sep = "! ") %>%
-      separate(pAge, c("Age", "Drop"), sep = " years") %>%
+      separate(label, c("Other", "Sex", "Age"), sep = ":") %>%
+      # separate(Other, c("drop", "pAge"), sep = "! ") %>%
+      # separate(pAge, c("Age", "Drop"), sep = " years") %>%
       mutate(Age = case_when(
-        Age == "Under 5" ~ 1,
-        Age == "5 to 9" ~ 2,
-        Age == "10 to 14" ~ 3,
-        Age == "15 to 17" ~ 4,
-        Age == "18 and 19" ~ 4,
-        Age == "20" ~ 5,
-        Age == "21" ~ 5,
-        Age == "22 to 24" ~ 5,
-        Age == "25 to 29" ~ 6,
-        Age == "30 to 34" ~ 7,
-        Age == "35 to 39" ~ 8,
-        Age == "40 to 44" ~ 9,
-        Age == "45 to 49" ~ 10,
-        Age == "50 to 54" ~ 11,
-        Age == "55 to 59" ~ 12,
-        Age == "60 and 61" ~ 13,
-        Age == "62 to 64" ~ 13,
-        Age == "65 and 66" ~ 14,
-        Age == "67 to 69" ~ 14,
-        Age == "70 to 74" ~ 15,
+        Age == "Under 5 years" ~ 1,
+        Age == "5 to 9 years" ~ 2,
+        Age == "10 to 14 years" ~ 3,
+        Age == "15 to 17 years" ~ 4,
+        Age == "18 and 19 years" ~ 4,
+        Age == "20 years" ~ 5,
+        Age == "21 years" ~ 5,
+        Age == "22 to 24 years" ~ 5,
+        Age == "25 to 29 years" ~ 6,
+        Age == "30 to 34 years" ~ 7,
+        Age == "35 to 39 years" ~ 8,
+        Age == "40 to 44 years" ~ 9,
+        Age == "45 to 49 years" ~ 10,
+        Age == "50 to 54 years" ~ 11,
+        Age == "55 to 59 years" ~ 12,
+        Age == "60 and 61 years" ~ 13,
+        Age == "62 to 64 years" ~ 13,
+        Age == "65 and 66 years" ~ 14,
+        Age == "67 to 69 years" ~ 14,
+        Age == "70 to 74 years" ~ 15,
         Age == "" ~ 15,
-        Age == "75 to 79" ~ 16,
-        Age == "80 to 84" ~ 17,
-        Age == "85" ~ 18),
+        Age == "75 to 79 years" ~ 16,
+        Age == "80 to 84 years" ~ 17,
+        Age == "85 years and over" ~ 18),
         Race = case_when(
           Racecode == "B" ~ "BLACK, NH",
           Racecode %in% c("C", "D", "E", "F", "G") ~ "OTHER, NH",
@@ -454,7 +455,7 @@ getgq_2000 = function(x){
       ungroup() %>%
       mutate(GQ = TOTAL - HHPOP,
              Age = as.numeric(Age),
-             YEAR = 2000,
+             YEAR = baseyear,
              STATE = as.numeric(state),
              COUNTY = as.numeric(county)
       ) %>%
@@ -473,8 +474,11 @@ list <- listCensusMetadata(name = "sf1", vintage = "2010", type ="variables")
 dat <- pbmclapply(stateid, getgq_2010)
 GQ2010 <- rbindlist(dat)
 
+baseyear <- "2000"
+
+
 list <- listCensusMetadata(name = "sf1", vintage = baseyear, type ="variables")
-dat <- pblapply(stateid, getgq_2000)
+dat <- pbmclapply(stateid, getgq_2000)
 GQ2000 <- rbindlist(dat)
 
 write_csv(GQ2010, "DATA-PROCESSED/gq_2010.csv")

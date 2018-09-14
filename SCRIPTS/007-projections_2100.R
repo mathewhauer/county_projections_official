@@ -1,77 +1,6 @@
-rm(list=ls())
-
-gc(reset = TRUE) # Garbage Collection
-
-#################### R Workspace Options ####################
-options(scipen = 12) # Scientific Notation
-options(digits = 6) # Specify Digits
-options(java.parameters = "-Xmx1000m") # Increase Java Heap Size
-
-######################################## Functions, Libraries, & Parallel Computing ########################################
-
-#################### Functions ####################
-
-########## Install and/or Load Packages ##########
-packages <- function(x){
-  
-  x <- deparse(substitute(x))
-  installed_packages <- as.character(installed.packages()[,1])
-  
-  if (length(intersect(x, installed_packages)) == 0){
-    install.packages(pkgs = x, dependencies = TRUE, repos = "http://cran.r-project.org")
-  }
-  
-  library(x, character.only = TRUE)
-  rm(installed_packages) # Remove From Workspace
-}
-
-########## Specify Number of Digits (Forward) ##########
-numb_digits_F <- function(x,y){
-  numb_digits_F <- do.call("paste0", list(paste0(rep(0, y - nchar(x)), collapse = ""), x))
-  numb_digits_F <- ifelse(nchar(x) < y, numb_digits_F, x)
-}
-
-########## Remove Double Space ##########
-numb_spaces <- function(x) gsub("[[:space:]]{2,}", " ", x)
-
-#################### Libraries ####################
-packages(data.table) # Data Management/Manipulation
-packages(doParallel) # Parallel Computing
-packages(foreach) # Parallel Computing
-packages(openxlsx) # Microsoft Excel Files
-packages(readxl) # Microsoft Excel Files
-packages(reshape2) # Data Management/Manipulation
-packages(stringi) # Character/String Editor
-packages(stringr) # Character/String Editor
-packages(zoo) # Time Series
-
-packages(parallelsugar)
-packages(tidyverse)
-packages(scales)
-packages(directlabels)
-packages(data.table)
-packages(tools)
-packages(tidycensus)
-packages(censusapi)
-packages(rucm)
-packages(pbmcapply)
-packages(pbapply)
-packages(RCurl)
-packages(mipfp)
-packages(rucm)
-packages(cowplot)
-
-packages(tidycensus)
-packages(tmap)
-packages(tmaptools)
-packages(tigris)
-packages(censusapi)
-packages(pbmcapply)
-
-rm(packages)
 set.seed(100)
 
-
+source('./SCRIPTS/000-Libraries.R')      # loading in the libraries
 source('./SCRIPTS/001-fipscodes.R')
 source('./SCRIPTS/003-proj_basedataload.R')
 Klaunch <- K05_pop[which(K05_pop$YEAR==launch_year),]
@@ -103,15 +32,18 @@ stateferts <- read_csv("DATA-PROCESSED/state-level-fert-rates_20152100.csv")
 samp <- unique(Klaunch$COUNTYRACE)
 # samp <- unique(K05_pop$COUNTYRACE[which(K05_pop$STATE == 15)])
 # samp <- "27129_3"
+# samp <- "48201_3"
 x = unlist(list(paste0(samp)))
 
 project = function(x){
   tryCatch({#print(x)
     ###   Prediction of the CCR function
     predccr = function(ccr, sex, x, DF){
-      y <- as_data_frame(DF[[as.character(ccr)]][which(DF$COUNTYRACE== x & DF$SEX == sex )])/10
+      y <- as_data_frame(DF[[as.character(ccr)]][which(DF$COUNTYRACE== x & DF$SEX == sex )])
       num<- seq(1,FORLEN,5)
-      pred<- tryCatch(predict(ucm(value~0, data = y, level = TRUE, slope = FALSE)$model, n.ahead = FORLEN)[c(num),]*10
+      # pred<- tryCatch(predict(ucm(value~0, data = y, level = TRUE, slope = FALSE)$model, n.ahead = FORLEN)[c(num),]
+      #                 , error=function(e) array(0, c(STEPS)))
+      pred<- tryCatch(forecast(arima(y$value, order = arima_order), h= FORLEN)$mean[c(num)]
                       , error=function(e) array(0, c(STEPS)))
       return(pred)
     }
@@ -441,12 +373,33 @@ project = function(x){
   , error=function(e){cat(x," ERROR :",conditionMessage(e), "\n")})
 }
 
-for(this.state in stateid){
-  x = unlist(list(unique(K05_pop$COUNTYRACE[which(K05_pop$STATE==this.state)])))
-  KT = rbindlist(pbmclapply(x, project, mc.cores = detectCores()-1))
-  KT2 <- KT %>%
-    mutate(AGE = as.numeric(substr(Var1, 2,3))) %>%
-    group_by(YEAR, COUNTYRACE, SEX, AGE) %>%
-    spread(Scenario, Freq)
-  write.table(KT2, paste0("PROJECTIONS/PROJ/COUNTY_20152100_",this.state,".csv"))
-}
+# for(this.state in stateid){
+#   x = unlist(list(unique(K05_pop$COUNTYRACE[which(K05_pop$STATE==this.state)])))
+#   KT = rbindlist(pbmclapply(x, project, mc.cores = detectCores()-1))
+#   KT2 <- KT %>%
+#     mutate(AGE = as.numeric(substr(Var1, 2,3))) %>%
+#     group_by(YEAR, COUNTYRACE, SEX, AGE) %>%
+#     spread(Scenario, Freq)
+#   write.table(KT2, paste0("PROJECTIONS/PROJ/COUNTY_20152100_",this.state,".csv"))
+# }
+
+pckgs <- c("data.table", "doParallel", "foreach", "tidyverse", "rucm", "forecast")
+(start.time <- Sys.time())
+
+foreach(i = 1:length(stateid), 
+        .combine = rbind, 
+        .errorhandling = "stop", 
+        .packages = pckgs) %dopar% {
+          
+          x = unlist(list(unique(K05_pop$COUNTYRACE[which(K05_pop$STATE==stateid[i])])))
+          KT = rbindlist(lapply(x, project))
+          
+          KT2 <- KT %>%
+            mutate(AGE = as.numeric(substr(Var1, 2,3))) %>%
+            group_by(YEAR, COUNTYRACE, SEX, AGE) %>%
+            spread(Scenario, Freq)
+          
+          write.table(KT2, paste0("PROJECTIONS/PROJ/COUNTY_20152100_",stateid[i],".csv"))
+          
+        }
+
