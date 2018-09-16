@@ -11,15 +11,15 @@ K05_launch <- K05_pop[which(K05_pop$YEAR == launch_year),] %>%
 files <- paste0("PROJECTIONS/EVAL//", list.files(path = "./PROJECTIONS/EVAL/",pattern = ".csv"))
 temp <- lapply(files, fread, sep=" ")
 z <- rbindlist( temp ) %>%
-  # dplyr::rename(YEAR = V3,
-  #               SEX = V4,
-  #               COUNTYRACE = V5,
-  #               TYPE = V6,
-  #               AGE = V7,
-  #               A = V8,
-  #               B = V9,
-  #               C = V10,
-  #               Var1 = V2) %>%
+  dplyr::rename(YEAR = V3,
+                SEX = V4,
+                COUNTYRACE = V5,
+                TYPE = V6,
+                AGE = V7,
+                A = V8,
+                B = V9,
+                C = V10,
+                Var1 = V2) %>%
   mutate(STATE= substr(COUNTYRACE, 1,2),
          COUNTY = substr(COUNTYRACE, 3,5),
          GEOID = paste0(STATE, COUNTY),
@@ -53,8 +53,6 @@ z<- rbind(z, combined) %>%
   TYPE == "Mult" ~ "CCR",
   TYPE == "ADDMULT" ~ "CCD/CCR"
 ))
-z$SEX<-as.character(z$SEX) # converting from integer to character to join with K05_launch2
-
 z<-  left_join(as.data.frame(z), as.data.frame(K05_launch2))
 z<- left_join(z, countynames)
 z[is.na(z)] <-0

@@ -51,33 +51,31 @@ if (!require("pacman", character.only = TRUE)){
 
 # Libraries
 pkgs <- c(
-  "tidyverse",     # Tidyverse
-  "data.table",    # Data Management/Manipulation
-  "doParallel",    # Parallel Computing
-  "foreach",       # Parallel Computing
-  "openxlsx",      # Microsoft Excel Files
-  "stringi",       #Character/String Editor
-  "stringr",       # Character/String Editor
-  "zoo",           # Time Series
-  "reshape2",      # Data Management/Manipulation
-  "scales",        # Number formatting
-  "cowplot",       # Plot Grids
-  "tmap",          # Cartography
-  "tmaptools",     # Cartographic tools
-  "tigris",        # US shapefiles
-  "censusapi",     # Census Data
-  "sp",            # Spatial Objects
-  "grid",          # Plot Grids
-  "kableExtra",    # Pretty Tables
-  "LexisPlotR",    # Lexis Diagrams
-  "pdftools",      # Load pdfs
-  "R.utils",       # Utilities
-  "forecast",      # Forecasting
-  "pbmcapply",     # Progress Bar Multicore Apply
-  "parallelsugar", # Parallel apply
-  "rucm",          # UCM
-  "IDPmisc",        # Quality na.rm
-  "tidycensus"     # Census Data
+  "tidyverse",   # Tidyverse
+  "data.table",  # Data Management/Manipulation
+  "doParallel",  # Parallel Computing
+  "foreach",     # Parallel Computing
+  "openxlsx",    # Microsoft Excel Files
+  "stringi",     # Character/String Editor
+  "stringr",     # Character/String Editor
+  "zoo",         # Time Series
+  "reshape2",    # Data Management/Manipulation
+  "scales",
+  "cowplot",
+  "tmap",
+  "tmaptools",
+  "tigris",
+  "censusapi",
+  "sp",
+  "grid",
+  "kableExtra",
+  "LexisPlotR",
+  "pdftools",
+  "R.utils",
+  "forecast",
+  "pbmcapply",
+  "parallelsugar"
+  
 )
 
 # Install missing packages
@@ -102,6 +100,3 @@ registerDoParallel(clusters) # Register Cluster
 getDoParWorkers() # Determine Number of Utilized Clusters
 getDoParName() #  Name of the Currently Registered Parallel Computing Backend
 getDoParVersion() #  Version of the Currently Registered Parallel Computing Backend
-
-arima_order <- c(0,1,1) # setting the global arima model
-arma <- "ARIMA(0,1,1)"
