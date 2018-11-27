@@ -42,7 +42,8 @@ eval_ucm_agetotal <- base_projunfitted %>%
   ))
 
 eval_ucm_agetotal2 <- z %>%
-  filter(!TYPE == "BASE") %>%
+  filter(!TYPE == "BASE",
+         TYPE == "CCD/CCR") %>%
   group_by(STATE, COUNTY, AGE, YEAR, TYPE) %>%
   dplyr::summarise(POPULATION = sum(POPULATION),
                    A = sum(A),
@@ -81,16 +82,16 @@ eval_ucm_agetotal2 <- z %>%
   ),
   TYPE = "RAKED CCD/CCR")
 
-eval_ucm_agetotal <- rbind(eval_ucm_agetotal)
+eval_ucm_agetotal <- rbind(eval_ucm_agetotal, eval_ucm_agetotal2)
 
-top<-ggplot(data=eval_ucm_agetotal, aes(group = TYPE)) +
-  geom_line(aes(x=AGE, y =MALPE, linetype=TYPE, col=TYPE)) +
+top <- ggplot(data=eval_ucm_agetotal, aes(group = TYPE)) +
   geom_hline(yintercept=0) +
+  geom_line(aes(x=AGE, y =MALPE, linetype=TYPE, col=TYPE)) +
   scale_y_continuous(labels = percent) +
   theme_bw() +
   labs(y = "Median ALPE")
 
-bot<- ggplot(data=eval_ucm_agetotal, aes(group = TYPE)) +
+bot <- ggplot(data=eval_ucm_agetotal, aes(group = TYPE)) +
   geom_line(aes(x=AGE, y =MAPE, linetype=TYPE, col=TYPE)) +
   geom_hline(yintercept=0) +
   scale_y_continuous(labels = percent) +

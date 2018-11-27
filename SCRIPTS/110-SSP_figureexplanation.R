@@ -50,21 +50,21 @@ SSPs2 <- SSPs %>%
   dplyr::summarise(Population = sum(Population)) %>%
   ungroup() %>%
   spread(SSP, Population) %>%
-  mutate(YEAR = as.integer(YEAR),
+  mutate(YEAR = as.integer(YEAR)
          # SEX = as.character(SEX))
   ) %>%
   gather(Scenario, Population, SSP1:SSP5)
 
 
-fig<-ggplot() + 
+fig <- ggplot() + 
   geom_blank() + 
   xlim(0, 10) + 
   ylim(0, 10) +
-  annotate("text", x= 2, y = 2, label="SSP1: \n Sustainability") + 
-  annotate("text", x= 5, y = 5, label="SSP2:\n Middle of the Road") + 
-  annotate("text", x= 8, y =8, label="SSP3:\n Regional Rivalry") + 
-  annotate("text", x= 2, y = 8, label="SSP5: \nFossil-fueled \nDevelopment") + 
-  annotate("text", x= 8, y = 2, label="SSP4:\n Inequality") + 
+  annotate("text", x= 2, y = 2, label="SSP1: \n Sustainability", color = "#66C2A5", fontface =2) + 
+  annotate("text", x= 5, y = 5, label="SSP2:\n Middle of the Road", color = "#FC8D62", fontface =2) + 
+  annotate("text", x= 8, y =8, label="SSP3:\n Regional Rivalry", color = "#8DA0CB", fontface =2) + 
+  annotate("text", x= 2, y = 8, label="SSP5: \nFossil-fueled \nDevelopment", color = "#A6D854", fontface =2) + 
+  annotate("text", x= 8, y = 2, label="SSP4:\n Inequality", color = "#E78AC3", fontface =2) + 
   theme(axis.ticks.y = element_blank(),
         axis.ticks.x = element_blank(),
         axis.text.x = element_blank(),

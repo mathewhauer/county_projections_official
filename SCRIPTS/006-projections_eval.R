@@ -374,18 +374,20 @@ project = function(x){
   , error=function(e){cat(x," ERROR :",conditionMessage(e), "\n")})
 }
 
-# for(this.state in stateid){
-#   x = unlist(list(unique(K05_pop$COUNTYRACE[which(K05_pop$STATE==this.state)])))
-#   KT = rbindlist(pbmclapply(x, project, mc.cores = detectCores()-1))
-#   KT2 <- KT %>%
-#     mutate(AGE = as.numeric(substr(Var1, 2,3))) %>%
-#     group_by(YEAR, COUNTYRACE, SEX, AGE) %>%
-#     spread(Scenario, Freq)
-#   write.table(KT2, paste0("PROJECTIONS/EVAL/COUNTY_20002015_",this.state,".csv"))
-# }
+for(this.state in stateid2){
+  x = unlist(list(unique(K05_pop$COUNTYRACE[which(K05_pop$STATE==this.state)])))
+  KT = rbindlist(pblapply(x, project))
+  KT2 <- KT %>%
+    mutate(AGE = as.numeric(substr(Var1, 2,3))) %>%
+    group_by(YEAR, COUNTYRACE, SEX, AGE) %>%
+    spread(Scenario, Freq)
+  write.table(KT2, paste0("PROJECTIONS/EVAL/COUNTY_20002015_",this.state,".csv"))
+}
 
 pckgs <- c("data.table", "doParallel", "foreach", "tidyverse", "rucm", "forecast")
 (start.time <- Sys.time())
+
+
 
 foreach(i = 1:length(stateid), 
         .combine = rbind, 

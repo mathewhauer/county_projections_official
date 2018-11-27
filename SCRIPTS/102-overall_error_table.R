@@ -21,9 +21,12 @@ eval_ucm_statetotal <- base_projunfitted %>%
          POPULATION = prettyNum(POPULATION, big.mark=",", scientific=FALSE)) %>%
   dplyr::select(-num, -FLAG2, -in80percentile, -A, -B, -C, -FLAG1, -ALPE, -LOW, -HIGH) %>%
   filter(!TYPE == "BASE") %>%
-  ungroup()
+  ungroup() %>%
+  arrange(YEAR)
 
 
 kable(eval_ucm_statetotal, 
-      format='pandoc', 
-      caption="\\label{tab:TOTALeval}**Evaluation of overall total errors for the entire United States.**")
+      "latex",
+      booktabs = T,
+      caption="\\label{tab:TOTALeval}\\textbf{Evaluation of overall total errors for the entire United States.}") %>%
+  collapse_rows(columns =1)
