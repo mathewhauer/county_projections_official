@@ -2,7 +2,7 @@
 output: 
   pdf_document:
     number_sections: true
-    citation_package: natbib
+    # citation_package: natbib
     keep_tex: true
     fig_caption: true
     latex_engine: pdflatex
