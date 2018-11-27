@@ -74,11 +74,10 @@ pkgs <- c(
   "R.utils",       # Utilities
   "forecast",      # Forecasting
   "pbmcapply",     # Progress Bar Multicore Apply
-  # "parallelsugar", # Parallel apply
+  "parallelsugar", # Parallel apply
   "rucm",          # UCM
   "IDPmisc",        # Quality na.rm
-  "tidycensus",     # Census Data
-  "LexisPlotR"
+  "tidycensus"     # Census Data
 )
 
 # Install missing packages
