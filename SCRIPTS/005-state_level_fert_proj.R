@@ -50,9 +50,9 @@ for(this.state in stateid){
       pred2 <-(b-a)*exp(pred)/(1+exp(pred))+a
       return(round(pred2,6))#
     }
-    # forecasst <- as_data_frame(forecast(arima(childbearingt$fertrat, order = c(1,1,0)), h= FORLEN)$mean[c(num)])
-    fertrats_20002015<-rbind(fertrats_20002015,as_data_frame(predcwr("fertrat", "2", this.race, childbearingt)) %>%
-    # fertrats_20002015<-rbind(fertrats_20002015,forecasst %>%
+    forecasst <- as_data_frame(forecast(arima(childbearingt$fertrat, order = arima_order), h= FORLEN)$mean[c(num)])
+    # fertrats_20002015<-rbind(fertrats_20002015,as_data_frame(predcwr("fertrat", "2", this.race, childbearingt)) %>%
+    fertrats_20002015<-rbind(fertrats_20002015,forecasst %>%
       mutate(STATE = this.state,
              RACE= this.race,
              SEX = 2))
@@ -104,9 +104,9 @@ for(this.state in stateid){
       pred2 <-(b-a)*exp(pred)/(1+exp(pred))+a
       return(round(pred2,6))#
     }
-    # forecasst <- as_data_frame(forecast(arima(childbearingt$fertrat, order = c(1,1,0)), h= FORLEN)$mean[c(num)])
-    fertrats_20152100<-rbind(fertrats_20152100,as_data_frame(predcwr("fertrat", "2", this.race, childbearingt)) %>%
-    # fertrats_20152100<-rbind(fertrats_20152100,forecasst %>%
+    forecasst <- as_data_frame(forecast(arima(childbearingt$fertrat, order = arima_order), h= FORLEN)$mean[c(num)])
+    # fertrats_20152100<-rbind(fertrats_20152100,as_data_frame(predcwr("fertrat", "2", this.race, childbearingt))) %>%
+    fertrats_20152100<-rbind(fertrats_20152100,forecasst %>%
                    mutate(STATE = this.state,
                       RACE= this.race,
                       SEX = 2))

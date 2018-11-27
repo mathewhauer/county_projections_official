@@ -66,3 +66,22 @@ base_projunfitted<- filter(z,
     GEOID=="46113"~ "46102",
     GEOID== "51917" ~ "51019",
     TRUE ~ as.character(GEOID)))
+
+countynumber <- base_projunfitted %>%
+  filter(!TYPE == "BASE") %>%
+  group_by(STATE, COUNTY, GEOID, YEAR, TYPE) %>%
+  dplyr::summarise(POPULATION = sum(POPULATION, na.rm=T),
+                   A = sum(A, na.rm=T),
+                   B = sum(B),
+                   C = sum(C),
+                   num = length(A)) %>%
+  mutate(FLAG1 = if_else(is.na((A/POPULATION)-1), 0,abs((A/POPULATION)-1)),
+         FLAG2 = if_else(POPULATION>=B & POPULATION<=C,1,0),
+         in90percentile = FLAG2/num) %>%
+  ungroup() %>%
+  filter(YEAR == 2015,
+         TYPE == "CCD/CCR") %>%
+  dplyr::select(FLAG1, STATE, GEOID) %>%
+  NaRV.omit()
+
+base_projunfitted<- filter(base_projunfitted, GEOID %in% countynumber$GEOID)
