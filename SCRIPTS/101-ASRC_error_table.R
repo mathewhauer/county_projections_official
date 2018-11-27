@@ -21,7 +21,6 @@ mapeeval<- eval_ucm_cntytotal %>%
   mutate(EVAL = "Median SAPE")
 
 table <- mapeeval %>%
-  dplyr::select(TYPE, num, EVAL, "2005", "2010", "2015") %>%
-  arrange(`2015`)
+  dplyr::select(TYPE, num, EVAL, "2005", "2010", "2015")
 
-kable(table, "latex", booktabs = T, caption="\\textbf{Evaluation of Age/Sex/Race/County joint Errors.}", digits = 1)
+kable(table, format='pandoc', caption="**Evaluation of Age/Sex/Race/County joint Errors.**", digits = 1)

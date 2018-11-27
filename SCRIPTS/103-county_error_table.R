@@ -41,7 +41,6 @@ malpeeval <- eval_ucm_cntytotal %>%
 
 table <- rbind(mapeeval, malpeeval) %>%
   # rbind(., eval80) %>%
-  dplyr::select(TYPE, n, EVAL, "2005", "2010", "2015") %>%
-  arrange(EVAL, `2015`)
+  dplyr::select(TYPE, n, EVAL, "2005", "2010", "2015")
 
-kable(table, "latex", booktabs = T, caption="\\label{tab:COUNTYeval}\\textbf{Evaluation of overall errors for each county.}")
+kable(table, format='pandoc', caption="\\label{tab:COUNTYeval}**Evaluation of overall errors for each county.**")

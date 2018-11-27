@@ -21,7 +21,7 @@ figure_race = function(x){
     theme_bw() +
     guides(fill=FALSE) +
     #scale_color_manual(name="TEST",labels = c("White", "Black", "Other"), values = c("red", "blue", "Green")) +
-    xlim(-1,1) +
+    xlim(-0.5,0.5) + 
     labs(x='Algebraic Percent(error)',
          y='Density') +
     facet_grid(. ~ TYPE, scales = "fixed")
@@ -35,7 +35,7 @@ figure_race2 = function(x){
     theme_bw() +
     guides(fill=FALSE) +
     #scale_color_manual(name="TEST",labels = c("White", "Black", "Other"), values = c("red", "blue", "Green")) +
-    xlim(0,1) +
+    xlim(0,0.5) + 
     labs(x='Absolute Percent(error)',
          y='Density') +
     facet_grid(. ~ TYPE, scales = "fixed")
