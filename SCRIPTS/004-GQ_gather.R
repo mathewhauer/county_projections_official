@@ -125,7 +125,7 @@ getgq_2010 = function(x){
     
     
     # Getting the census data from the API
-    totpop <- getCensus(name="sf1", # This is the Estimates datafile
+    totpop <- getCensus(name="dec/sf1", # This is the Estimates datafile
                         vintage = "2010", # Vintage year is set to the variable set above
                         key = key, # inputting my Census API key
                         vars = totpopvars, # gathering these variables
