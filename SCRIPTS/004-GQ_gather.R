@@ -470,14 +470,14 @@ getgq_2000 = function(x){
   , error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
 }
 
-list <- listCensusMetadata(name = "sf1", vintage = "2010", type ="variables")
+list <- listCensusMetadata(name = "dec/sf1", vintage = "2010", type ="variables")
 dat <- pbmclapply(stateid, getgq_2010)
 GQ2010 <- rbindlist(dat)
 
 baseyear <- "2000"
 
 
-list <- listCensusMetadata(name = "sf1", vintage = baseyear, type ="variables")
+list <- listCensusMetadata(name = "dec/sf1", vintage = baseyear, type ="variables")
 dat <- pbmclapply(stateid, getgq_2000)
 GQ2000 <- rbindlist(dat)
 
